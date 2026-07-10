@@ -1,7 +1,5 @@
 """
 LLM Service
-
-Responsible for communicating with the local Ollama model.
 """
 
 from langchain_ollama import ChatOllama
@@ -11,11 +9,9 @@ from app.config.logging_config import logger
 
 
 class LLMService:
-    """
-    Handles communication with the LLM.
-    """
 
     def __init__(self):
+
         logger.info("Initializing Ollama model...")
 
         self.llm = ChatOllama(
@@ -27,14 +23,19 @@ class LLMService:
         logger.info(f"Model Loaded: {settings.MODEL_NAME}")
 
     def invoke(self, prompt: str) -> str:
-        """
-        Send a prompt to the LLM and return the response.
-        """
 
         logger.info("Sending prompt to LLM...")
 
-        response = self.llm.invoke(prompt)
+        try:
 
-        logger.info("Received response from LLM.")
+            response = self.llm.invoke(prompt)
 
-        return response.content
+            logger.info("Received response from LLM.")
+
+            return response.content
+
+        except Exception as e:
+
+            logger.exception("LLM Error")
+
+            return f"Error: {str(e)}"
