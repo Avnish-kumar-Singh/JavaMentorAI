@@ -4,7 +4,7 @@ graph = build_graph()
 
 state = {
     "messages": [],
-    "user_query": input("Ask JavaMentorAI: "),
+    "user_query": "Explain JVM in simple language.",
     "intent": "",
     "selected_tool": "",
     "context": "",
@@ -15,8 +15,6 @@ state = {
 
 result = graph.invoke(state)
 
-print("\n==============================")
-print("JavaMentorAI")
-print("==============================\n")
+print("\n========== FINAL RESPONSE ==========\n")
 
 print(result["response"])
