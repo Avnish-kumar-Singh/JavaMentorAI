@@ -44,7 +44,6 @@
 
 
 
-
 from app.graph.state import AgentState
 from app.config.logging_config import logger
 from app.core.enums import ToolName, Intent
@@ -58,11 +57,32 @@ class PlannerAgent:
 
         logger.info("Planner Agent Started")
 
+        # Default route
         state["intent"] = Intent.GENERAL.value
         state["selected_tool"] = ToolName.LLM.value
 
-        if "spring" in query:
-            state["intent"] = Intent.SPRING_BOOT.value
+        # Temporary RAG routing for Java-related questions
+        rag_keywords = [
+            "java",
+            "jvm",
+            "spring",
+            "collection",
+            "collections",
+            "hashmap",
+            "arraylist",
+            "linkedlist",
+            "multithreading",
+            "thread",
+            "exception",
+            "jdbc",
+            "hibernate",
+            "rest api",
+            "microservices",
+        ]
+
+        if any(keyword in query for keyword in rag_keywords):
+            state["intent"] = Intent.RAG.value
+            state["selected_tool"] = ToolName.RAG.value
 
         elif "bug" in query or "error" in query:
             state["intent"] = Intent.DEBUG.value
