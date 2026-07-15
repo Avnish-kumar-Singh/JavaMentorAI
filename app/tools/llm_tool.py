@@ -2,11 +2,12 @@
 LLM Tool
 """
 
+from app.tools.base_tool import BaseTool
 from app.graph.state import AgentState
 from app.agents.answer_agent import AnswerAgent
 
 
-class LLMTool:
+class LLMTool(BaseTool):
 
     def __init__(self):
         self.agent = AnswerAgent()
