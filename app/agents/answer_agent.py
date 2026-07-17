@@ -112,7 +112,12 @@ class AnswerAgent:
             context=context,
         )
 
-        response = self.llm.invoke(prompt)
+        # response = self.llm.invoke(prompt)
+        
+        response = self.llm.invoke(
+                prompt=prompt,
+                question=state["user_query"]
+        )
 
         state["response"] = response
 
