@@ -91,6 +91,100 @@
             
             
             
+# """
+# LLM Service
+# """
+# 
+# from langchain_ollama import ChatOllama
+# 
+# from app.config.settings import settings
+# from app.config.logging_config import logger
+# 
+# 
+# class LLMService:
+# 
+    # def __init__(self):
+# 
+        # logger.info("Initializing Ollama model...")
+# 
+        # Create the base model only once
+        # self.llm = ChatOllama(
+            # model=settings.MODEL_NAME,
+            # base_url=settings.OLLAMA_BASE_URL,
+            # temperature=0.2,
+        # )
+# 
+        # logger.info(f"Model Loaded: {settings.MODEL_NAME}")
+# 
+    # def invoke(self, prompt: str, question: str) -> str:
+    # 
+    # def invoke(
+    # self,
+    # prompt: str,
+    # question: str,
+    # max_tokens: int,
+# ) -> str:
+# 
+        # logger.info("Sending prompt to LLM...")
+# 
+        # question = question.lower()
+# 
+        # Decide max output tokens based on question type
+        # if any(word in question for word in [
+            # "explain",
+            # "internally",
+            # "architecture",
+            # "working",
+            # "deep",
+            # "detail",
+        # ]):
+            # num_predict = 900
+# 
+        # elif any(word in question for word in [
+            # "difference",
+            # "compare",
+            # "vs",
+        # ]):
+            # num_predict = 700
+# 
+        # else:
+            # num_predict = 500
+# 
+        # logger.info(f"Using num_predict = {num_predict}")
+# 
+        # try:
+# 
+            # Create a request-specific configuration
+            # llm = self.llm.bind(
+                # num_predict=num_predict
+            # )
+# 
+            # response = llm.invoke(prompt)
+            # 
+            # 
+            # llm = self.llm.bind(
+                # options={
+                    #   "num_predict": num_predict,
+                # }
+            # )
+# 
+            # response = llm.invoke(prompt)
+# 
+            # logger.info("Received response from LLM.")
+# 
+            # return response.content
+# 
+        # except Exception as e:
+# 
+            # logger.exception("LLM Error")
+# 
+            # return f"Error: {str(e)}"
+            
+            
+            
+            
+            
+            
 """
 LLM Service
 """
@@ -107,7 +201,6 @@ class LLMService:
 
         logger.info("Initializing Ollama model...")
 
-        # Create the base model only once
         self.llm = ChatOllama(
             model=settings.MODEL_NAME,
             base_url=settings.OLLAMA_BASE_URL,
@@ -116,48 +209,21 @@ class LLMService:
 
         logger.info(f"Model Loaded: {settings.MODEL_NAME}")
 
-    def invoke(self, prompt: str, question: str) -> str:
+    def invoke(
+        self,
+        prompt: str,
+        question: str,
+        max_tokens: int,
+    ) -> str:
 
         logger.info("Sending prompt to LLM...")
-
-        question = question.lower()
-
-        # Decide max output tokens based on question type
-        if any(word in question for word in [
-            "explain",
-            "internally",
-            "architecture",
-            "working",
-            "deep",
-            "detail",
-        ]):
-            num_predict = 900
-
-        elif any(word in question for word in [
-            "difference",
-            "compare",
-            "vs",
-        ]):
-            num_predict = 700
-
-        else:
-            num_predict = 300
-
-        logger.info(f"Using num_predict = {num_predict}")
+        logger.info(f"Using max_tokens = {max_tokens}")
 
         try:
 
-            # Create a request-specific configuration
-            # llm = self.llm.bind(
-                # num_predict=num_predict
-            # )
-
-            # response = llm.invoke(prompt)
-            
-            
             llm = self.llm.bind(
                 options={
-                      "num_predict": num_predict,
+                    "num_predict": max_tokens
                 }
             )
 

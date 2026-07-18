@@ -14,4 +14,9 @@ class Settings(BaseSettings):
     LOG_LEVEL: str = "INFO"
 
 
+    # Response Planning
+    SHORT_RESPONSE_TOKENS: int = 1000
+    MEDIUM_RESPONSE_TOKENS: int = 1800
+    LONG_RESPONSE_TOKENS: int = 2500
+
 settings = Settings()

@@ -89,34 +89,41 @@
 Answer Agent
 """
 
+from app.services.response_planner import ResponsePlanner
 from app.graph.state import AgentState
 from app.services.llm_service import LLMService
 from app.config.logging_config import logger
 from app.synthesis.prompt_builder import PromptBuilder
-
 
 class AnswerAgent:
 
     def __init__(self):
         self.llm = LLMService()
         self.prompt_builder = PromptBuilder()
+        self.response_planner = ResponsePlanner()
 
     def generate(self, state: AgentState) -> AgentState:
 
         logger.info("Answer Agent Started")
 
+        question = state["user_query"]
         context = state.get("context", "")
 
+        # Generate response plan
+        response_plan = self.response_planner.plan(question)
+
+        # Build prompt
         prompt = self.prompt_builder.build(
-            question=state["user_query"],
+            question=question,
             context=context,
+            response_plan=response_plan,
         )
 
-        # response = self.llm.invoke(prompt)
-        
+        # Generate response
         response = self.llm.invoke(
-                prompt=prompt,
-                question=state["user_query"]
+            prompt=prompt,
+            question=question,
+            max_tokens=response_plan["max_tokens"],
         )
 
         state["response"] = response
