@@ -5,7 +5,8 @@ class ToolName(str, Enum):
     LLM = "llm"
     RAG = "rag"
     WEB = "web"
-    JAVA = "java"
+    # JAVA = "java"
+    JAVA_COMPILER = "java_compiler"
 
 
 class Intent(str, Enum):
